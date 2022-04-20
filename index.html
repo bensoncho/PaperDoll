@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+      #myCanvas {
+        border: 1px solid #9C9898;
+      }
+      #divContext {
+	    position:absolute;
+		left:500px;
+		top:20px;		
+      }
+    </style>
+    <script>
+        var sources = {
+          people: "/images/people.png",
+          //glasses: "./images/Glasses.png",
+          clothes: "./images/Clothes.png",
+          pants: "./images/Pants.png"
+        };      
+      function loadImages(sources, callback) {
+        
+        var images = {};
+        var loadedImages = 0;
+        var numImages = 0;
+        // get num of sources
+        for(var src in sources) {
+          numImages++;
+        }
+        for(var src in sources) {
+          images[src] = new Image();
+          images[src].onload = function() {
+            if(++loadedImages >= numImages) {
+              callback(images);
+            }
+          };
+          images[src].src = sources[src];
+        }
+      }
+      window.onload = function(images) {
+        var canvas = document.getElementById("myCanvas");
+        var context = canvas.getContext("2d");
+
+
+        //增加 object value
+        //sources.shoes = "./images/Shoes.png";
+        sources["shoes"] = "./images/Shoes.png";
+        //刪除 object value
+        delete sources["glasses"]; 
+
+        loadImages(sources, function(images) {
+          for(var key in images){
+            context.drawImage(images[key], 0, 0, 340, 1026);    
+          }
+		  //context.drawImage(images.people, 0, 0, 340, 1026);
+		  //context.drawImage(images.glasses, 0, 0, 340, 1026);                    
+          //context.drawImage(images.clothes, 0, 0, 340, 1026);                    
+          //context.drawImage(images.pants, 0, 0, 340, 1026);            
+        });
+      };
+
+    function toogleItem(item){
+      console.log(item);
+      sources[item] = "./images/Glasses.png";
+      console.log(sources);
+    }
+
+    //Download Canvas Picture
+    function downloadCanvasAsImage(){
+        let canvasImage = document.getElementById('myCanvas').toDataURL('image/png');
+        // this can be used to download any image from webpage to local disk
+        let xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+            let a = document.createElement('a');
+            a.href = window.URL.createObjectURL(xhr.response);
+            a.download = 'image_name.png';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        };
+        xhr.open('GET', canvasImage); // This is to download the canvas Image
+        xhr.send();
+    }      
+    </script>
+  </head>
+  
+    <div id="divContext">
+		<canvas id="myCanvas" width="350" height="1026"></canvas>
+	</div>    
+    <input type="button" onclick="downloadCanvasAsImage();" value="下載圖片"></input> <br><br>
+    <input type="button" value="Glasses" onclick="toogleItem(this.value)"></input>
+  </body>
+</html>
