@@ -72,10 +72,12 @@
           //delete sources["glasses"]; 
     */
     function toogleItem(item){
-      if (item.id in sources)
-        delete sources[item.id]; 
+      var itemID = item.dataset.id;
+      var itemSrc = item.dataset.src;
+      if (itemID in sources && itemSrc == sources[itemID])
+        delete sources[itemID]; 
       else
-        sources[item.id] = item.dataset.src;          
+        sources[itemID] = itemSrc;
       
       //re-create Canvas
       createCanvas();
@@ -105,10 +107,15 @@
     <div id="divContext">
 		<canvas id="dollCanvas" width="350" height="1026"></canvas>
 	</div>    
-    <input type="button" id="Glasses" value="眼鏡" onclick="toogleItem(this)" data-src="./images/Glasses.png"></input> <br><br>
-    <input type="button" id="Clothes" value="衣服" onclick="toogleItem(this)" data-src="./images/Clothes.png"></input> <br><br>
-    <input type="button" id="Pants" value="褲子" onclick="toogleItem(this)" data-src="./images/Pants.png"></input> <br><br>
-    <input type="button" id="Shoes" value="鞋子" onclick="toogleItem(this)" data-src="./images/Shoes.png"></input> <br><br>
+    <input type="button" value="眼鏡" onclick="toogleItem(this)" data-id="Glasses" data-src="./images/Glasses.png"></input> <br><br>
+    <input type="button" value="項鏈" onclick="toogleItem(this)" data-id="Necklace" data-src="./images/Necklace.png"></input> <br><br>
+    <input type="button" value="衣服" onclick="toogleItem(this)" data-id="Clothes" data-src="./images/Clothes.png"></input> 
+    <input type="button" value="衣服" onclick="toogleItem(this)" data-id="Clothes" data-src="./images/Clothes2.png"></input> 
+    <br><br>
+    <input type="button" value="褲子" onclick="toogleItem(this)" data-id="Pants" data-src="./images/Pants.png"></input> 
+    <input type="button" value="褲子" onclick="toogleItem(this)" data-id="Pants" data-src="./images/Pants2.png"></input> 
+    <input type="button" value="褲子" onclick="toogleItem(this)" data-id="Pants" data-src="./images/Pants3.png"></input> <br><br>    
+    <input type="button" value="鞋子" onclick="toogleItem(this)" data-id="Shoes" data-src="./images/Shoes.png"></input> <br><br>
     <input type="button" onclick="downloadCanvasAsImage('dollCanvas');" value="下載圖片"></input> <br><br>
   </body>
 </html>
