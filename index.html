@@ -6,24 +6,46 @@
         margin: 0px;
         padding: 0px;
       }
-      #myCanvas {
-        border: 1px solid #9C9898;
+      #dollCanvas {
+        border: 1px solid #f15c17;
       }
       #divContext {
-	    position:absolute;
-		left:500px;
-		top:20px;		
+        position:absolute;
+        left:500px;
+        top:20px;		
       }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        var sources = {
-          people: "/images/people.png",
-          //glasses: "./images/Glasses.png",
-          clothes: "./images/Clothes.png",
-          pants: "./images/Pants.png"
-        };      
-      function loadImages(sources, callback) {
-        
+      //Image Lists
+      var sources = {
+        people: "/images/people.png",
+        Clothes: "./images/Clothes.png",
+        Pants: "./images/Pants.png"
+      };     
+      
+      //Document Ready
+      $(function() {
+        createCanvas();
+      });
+
+      
+      function createCanvas(){
+        var canvas = document.getElementById("dollCanvas");
+        var context = canvas.getContext("2d");        
+        //load images , and draw at canvas
+        loadImages(sources, function(images) {
+          for(var key in images){
+            context.drawImage(images[key], 0, 0, 350, 1026);    
+          }
+          //another way
+		      //context.drawImage(images.people, 0, 0, 340, 1026);
+		      //context.drawImage(images.glasses, 0, 0, 340, 1026);
+        });
+      }
+
+      //load images data, and callback
+      function loadImages(sources, callback) {        
         var images = {};
         var loadedImages = 0;
         var numImages = 0;
@@ -33,45 +55,35 @@
         }
         for(var src in sources) {
           images[src] = new Image();
+          images[src].src = sources[src];
           images[src].onload = function() {
             if(++loadedImages >= numImages) {
               callback(images);
             }
-          };
-          images[src].src = sources[src];
+          };          
         }
       }
-      window.onload = function(images) {
-        var canvas = document.getElementById("myCanvas");
-        var context = canvas.getContext("2d");
-
-
-        //增加 object value
-        //sources.shoes = "./images/Shoes.png";
-        sources["shoes"] = "./images/Shoes.png";
-        //刪除 object value
-        delete sources["glasses"]; 
-
-        loadImages(sources, function(images) {
-          for(var key in images){
-            context.drawImage(images[key], 0, 0, 340, 1026);    
-          }
-		  //context.drawImage(images.people, 0, 0, 340, 1026);
-		  //context.drawImage(images.glasses, 0, 0, 340, 1026);                    
-          //context.drawImage(images.clothes, 0, 0, 340, 1026);                    
-          //context.drawImage(images.pants, 0, 0, 340, 1026);            
-        });
-      };
-
+    
+    /*
+        //add object value
+          //sources.shoes = "./images/Shoes.png";
+          //sources["shoes"] = "./images/Shoes.png";
+        //delete object value
+          //delete sources["glasses"]; 
+    */
     function toogleItem(item){
-      console.log(item);
-      sources[item] = "./images/Glasses.png";
-      console.log(sources);
+      if (item.id in sources)
+        delete sources[item.id]; 
+      else
+        sources[item.id] = item.dataset.src;          
+      
+      //re-create Canvas
+      createCanvas();
     }
 
     //Download Canvas Picture
-    function downloadCanvasAsImage(){
-        let canvasImage = document.getElementById('myCanvas').toDataURL('image/png');
+    function downloadCanvasAsImage(canvasID){
+        let canvasImage = document.getElementById(canvasID).toDataURL('image/png');
         // this can be used to download any image from webpage to local disk
         let xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
@@ -91,9 +103,12 @@
   </head>
   
     <div id="divContext">
-		<canvas id="myCanvas" width="350" height="1026"></canvas>
+		<canvas id="dollCanvas" width="350" height="1026"></canvas>
 	</div>    
-    <input type="button" onclick="downloadCanvasAsImage();" value="下載圖片"></input> <br><br>
-    <input type="button" value="Glasses" onclick="toogleItem(this.value)"></input>
+    <input type="button" id="Glasses" value="眼鏡" onclick="toogleItem(this)" data-src="./images/Glasses.png"></input> <br><br>
+    <input type="button" id="Clothes" value="衣服" onclick="toogleItem(this)" data-src="./images/Clothes.png"></input> <br><br>
+    <input type="button" id="Pants" value="褲子" onclick="toogleItem(this)" data-src="./images/Pants.png"></input> <br><br>
+    <input type="button" id="Shoes" value="鞋子" onclick="toogleItem(this)" data-src="./images/Shoes.png"></input> <br><br>
+    <input type="button" onclick="downloadCanvasAsImage('dollCanvas');" value="下載圖片"></input> <br><br>
   </body>
 </html>
