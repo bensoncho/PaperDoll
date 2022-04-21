@@ -24,9 +24,9 @@
     //Pictures List
     var image_data = {
       people:{src:"./images/people.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:1},
-      glasses:{src:"./images/Glasses.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:2},
-      clothes:{src:"./images/Clothes.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:3},
-      pants:{src:"./images/Pants.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:4}
+      Glasses:{src:"./images/Glasses.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:2},
+      Clothes:{src:"./images/Clothes.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:3},
+      Pants:{src:"./images/Pants.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:4}
       //shoes:{src:"./images/Shoes.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:4}
     };      
     $('document').ready(function () {               
@@ -99,7 +99,15 @@
 <body>
   <div id="imageDIV"></div>
   <input type="button" value="download" id="download"></input> <br><br>
-  <input type="button" value="鞋子" onclick="toogleItem(this)" data-id="Shoes" data-src="./images/Shoes.png" data-zindex="4"></input> <br><br>
+  <input type="button" value="眼鏡" onclick="toogleItem(this)" data-id="Glasses" data-src="./images/Glasses.png" data-zindex="1"></input> <br><br>  
+  <input type="button" value="項鏈" onclick="toogleItem(this)" data-id="Necklace" data-src="./images/Necklace.png" data-zindex="2"></input> <br><br>
+  <input type="button" value="衣服" onclick="toogleItem(this)" data-id="Clothes" data-src="./images/Clothes.png" data-zindex="3"></input> 
+  <input type="button" value="衣服" onclick="toogleItem(this)" data-id="Clothes" data-src="./images/Clothes2.png" data-zindex="3  "></input> 
+  <br><br>  
+  <input type="button" value="褲子" onclick="toogleItem(this)" data-id="Pants" data-src="./images/Pants.png" data-zindex="4"></input> 
+  <input type="button" value="褲子" onclick="toogleItem(this)" data-id="Pants" data-src="./images/Pants2.png" data-zindex="4"></input> 
+  <input type="button" value="褲子" onclick="toogleItem(this)" data-id="Pants" data-src="./images/Pants3.png" data-zindex="4"></input> <br><br>     
+  <input type="button" value="鞋子" onclick="toogleItem(this)" data-id="Shoes" data-src="./images/Shoes.png" data-zindex="5"></input> <br><br>
 </body>
 
 </html>
