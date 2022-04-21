@@ -1,67 +1,105 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <style>
-      body {
-        margin: 0px;
-        padding: 0px;
-      }
-      #divContext {
-        border: 1px solid #e7a006;
-		left:500px;
-		top:10px;
-		position:absolute;
-		width:350px;
-		height:1026px;
-      }
-    </style>
-    <script>
-      function loadImages(sources, callback) {
-        var images = {};
-        var loadedImages = 0;
-        var numImages = 0;
-        // get num of sources
-        for(var src in sources) {
-          numImages++;
-        }
-        for(var src in sources) {
-		  images[src] = new Image();
-		  images[src].onload = function() {
-			if(++loadedImages >= numImages) {
-			  callback(images);
-			}
-		  };
-		  images[src].src = sources[src].src;
-		  images[src].style.left = sources[src].left ;
-		  images[src].style.top = sources[src].top ;
-		  images[src].style.width = sources[src].width ;
-		  images[src].style.height = sources[src].height ;
-		  images[src].style.position = 'absolute';
-		  images[src].style.zIndex = sources[src].zIndex ;
-        }
-      }      
-      window.onload = function(images) {		
-        //要堆疊的圖片
-		var image_data = {
-		   people:{src:"./images/people.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:1},
-		   glasses:{src:"./images/Glasses.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:2},
-           clothes:{src:"./images/Clothes.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:3},
-           pants:{src:"./images/Pants.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:4}
-		};
 
-        loadImages(image_data, function(images) {
-			var div = document.getElementById('divContext');
-            for(var key in images)
-			{
-			    div.appendChild(images[key]);
-			}
+<head>
+  <style>
+    body {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    #imageDIV {
+      border: 1px solid #e7a006;
+      left: 500px;
+      top: 10px;
+      position: absolute;
+      width: 350px;
+      height: 1026px;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+  <script>
+    //Pictures List
+    var image_data = {
+      people:{src:"./images/people.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:1},
+      glasses:{src:"./images/Glasses.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:2},
+      clothes:{src:"./images/Clothes.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:3},
+      pants:{src:"./images/Pants.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:4}
+      //shoes:{src:"./images/Shoes.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:4}
+    };      
+    $('document').ready(function () {               
+      //LoadImages
+      loadImages(image_data, function (images) {
+        var div = document.getElementById('imageDIV');
+        for (var key in images) {
+          div.appendChild(images[key]);
+        }
+      });
+
+      //Download
+      $("#download").on("click", function () {
+        html2canvas(document.querySelector("#imageDIV")).then(canvas => {
+          canvas.toBlob(function (blob) {
+            window.saveAs(blob, 'my_image.jpg');
+          });
         });
-      };
+      });
+    });
 
-    </script>
-  </head>
-  <body>
-    <div id="divContext">
-	</div>
-  </body>
+    //image_data.shoes = {src:"./images/Shoes.png",left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:4};
+    function toogleItem(item){
+      var itemID = item.dataset.id;
+      var itemSrc = item.dataset.src;
+      var itemzIndex = item.dataset.zindex;      
+
+      if (itemID in image_data && itemSrc == image_data[itemID].src)
+        delete image_data[itemID]; 
+      else
+        image_data[itemID] = {src:itemSrc,left:"5px",top:"5px",width:"340px",height:"1026px",zIndex:itemzIndex};
+
+      //LoadImages
+      loadImages(image_data, function (images) {
+        var div = document.getElementById('imageDIV');
+        div.innerHTML=""; //clear imageDIV
+        for (var key in images) {
+          div.appendChild(images[key]);
+        }
+      });
+    }
+
+    function loadImages(sources, callback) {
+      var images = {};
+      var loadedImages = 0;
+      var numImages = 0;
+      // get num of sources
+      for (var src in sources) {
+        numImages++;
+      }
+      for (var src in sources) {
+        images[src] = new Image();
+        images[src].onload = function () {
+          if (++loadedImages >= numImages) {
+            callback(images);
+          }
+        };
+        images[src].src = sources[src].src;
+        images[src].style.left = sources[src].left;
+        images[src].style.top = sources[src].top;
+        images[src].style.width = sources[src].width;
+        images[src].style.height = sources[src].height;
+        images[src].style.position = 'absolute';
+        images[src].style.zIndex = sources[src].zIndex;
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div id="imageDIV"></div>
+  <input type="button" value="download" id="download"></input> <br><br>
+  <input type="button" value="鞋子" onclick="toogleItem(this)" data-id="Shoes" data-src="./images/Shoes.png" data-zindex="4"></input> <br><br>
+</body>
+
 </html>
